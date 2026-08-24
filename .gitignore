@@ -1,0 +1,50 @@
+# Block credentials used by OpenCode providers
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Dependencies
+node_modules/
+
+# Build output
+client/dist/
+
+# Test coverage
+coverage/
+server/coverage/
+
+# Local database
+server/data/
+
+# Logs
+*.log
+
+# Playwright MCP artifacts
+.playwright-mcp/
+
+# Block all local OpenCode project configuration variants
+opencode.json
+opencode.jsonc
+.opencode/
+
+# OpenSpec active work tracking
+#openspec/changes/
+
+
+# --- Oh-My-OpenCode / omo Orchestration Traces ---
+# Ignore temporary runtime execution, agent states, and internal loops
+.omo/
+.sisyphus/
+.hive/
+
+# Ignore autonomous session logs and plan continuations
+.opencode/loop-history/
+.loop-history-*.md
+
+# Exclude temporary orchestration planning files if run at project root
+TIMEOUT_PLAN.md
+GOAL.md
+GOALS.md
+PR-NOTES.md
