@@ -8,6 +8,7 @@ export default function App() {
   const [books, setBooks] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [duplicate, setDuplicate] = useState(null);
+  const [mutationError, setMutationError] = useState(null);
 
   const refresh = useCallback(async () => {
     const data = await api.listBooks();
@@ -40,18 +41,33 @@ export default function App() {
   }
 
   async function handleStatusChange(id, status) {
-    await api.updateStatus(id, status);
-    await refresh();
+    setMutationError(null);
+    try {
+      await api.updateStatus(id, status);
+      await refresh();
+    } catch (error) {
+      setMutationError(error.message);
+    }
   }
 
   async function handleRating(id, rating) {
-    await api.setRating(id, rating);
-    await refresh();
+    setMutationError(null);
+    try {
+      await api.setRating(id, rating);
+      await refresh();
+    } catch (error) {
+      setMutationError(error.message);
+    }
   }
 
   async function handleDelete(id) {
-    await api.deleteBook(id);
-    await refresh();
+    setMutationError(null);
+    try {
+      await api.deleteBook(id);
+      await refresh();
+    } catch (error) {
+      setMutationError(error.message);
+    }
   }
 
   return (
@@ -65,6 +81,12 @@ export default function App() {
 
       <main className="mx-auto max-w-2xl space-y-8 px-4 py-8">
         <BookForm onAdd={handleAdd} />
+        {mutationError && (
+          <div role="alert" className="flex items-center justify-between rounded-lg bg-red-50 p-4 text-sm text-red-700">
+            <span>{mutationError}</span>
+            <button type="button" onClick={() => setMutationError(null)} className="text-red-500 hover:text-red-700">✕</button>
+          </div>
+        )}
         <BookList
           books={books}
           loaded={loaded}

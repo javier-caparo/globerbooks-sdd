@@ -92,7 +92,7 @@ All API errors SHALL use standard HTTP status codes (`400` validation, `404` not
 - **THEN** the response status is `400` and the body contains a human-readable `error`, a machine-readable `code`, and an ISO-8601 `timestamp`
 
 ### Requirement: Frontend collection management
-The frontend SHALL let the user add a book, view the collection, change a book's status, rate a completed book, remove a book, and act on duplicate warnings — without page reloads lost state.
+The frontend SHALL let the user add a book, view the collection, change a book's status, rate a completed book, remove a book, and act on duplicate warnings — without page reloads lost state. When a mutation (status change, rating, or delete) fails, the frontend SHALL surface a user-visible error message describing the failure.
 
 #### Scenario: Add a book from the UI
 - **WHEN** the user fills title and author and submits the add form
@@ -105,3 +105,7 @@ The frontend SHALL let the user add a book, view the collection, change a book's
 #### Scenario: Duplicate warning from the UI
 - **WHEN** adding a book triggers a duplicate flag
 - **THEN** the UI shows the existing book details with "Add anyway" and "Cancel" actions, and the chosen action is applied
+
+#### Scenario: Mutation failure shows error feedback
+- **WHEN** a status change, rating, or delete API call fails (network error or 4xx/5xx response)
+- **THEN** the frontend displays a user-visible error message describing the failure, and the book list is not silently updated with stale state
